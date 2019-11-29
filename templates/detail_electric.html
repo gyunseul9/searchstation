@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xml:lang='ko' xmlns='http://www.w3.org/1999/xhtml'>
+    <head>
+        <meta http-equiv='Content-Type' content='text/html' charset='utf-8'/>
+        <meta name='viewport' content='user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width'/>
+        <title>전기차 충전소 위치</title>  
+    </head>
+{% for item in data %}
+<body>
+<a href='/'>전기차 충전소 찾기</a> > <a href="/requested?api=electric">찾기 페이지</a> > <a href="/lists_electric?sess={{session['sess']}}&api={{session['api']}}">찾기 결과 페이지</a><br/><br/>
+<div id="map" style="width:400px;height:500px;"></div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=APPKEY"></script>
+<script>
+var latitude = "{{item['lat']}}";
+var hardness = "{{item['longi']}}";
+
+console.log(latitude);
+
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(Number(latitude), Number(hardness)), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+// 마커가 표시될 위치입니다 
+var markerPosition  = new kakao.maps.LatLng(Number(latitude), Number(hardness)); 
+
+// 마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);
+
+var csId = "충전소ID: {{item['csId']}}";
+var csNm = "충전소명칭: {{item['csNm']}}";
+var addr = "{{item['addr']}}";
+var cpId = "충전기ID: {{item['cpId']}}";
+var cpNm = "충전기명칭: {{item['cpNm']}}";
+var chargeTp = "{{item['chargeTp']}}"; //충전기타입
+var cpStat = "{{item['cpStat']}}"; //충전기상태
+var cpTp = "{{item['cpTp']}}"; //충전방식
+var statUpdateDatetime = "갱신시각: {{item['statUpdateDatetime']}}";
+
+var type = "-"
+
+switch(chargeTp){
+    case "1" : type = "완속"; break;
+    case "2" : type = "급속"; break;
+    default : type = "-";
+}
+
+var state = "-"
+
+switch(cpStat){
+    case "1" : state = "충전가능"; break;
+    case "2" : state = "충전중"; break;
+    case "3" : state = "고장/점검"; break;
+    case "4" : state = "통신장애"; break;
+    case "5" : state = "통신미연결"; break;            
+    default : state = "-";
+}
+
+var system = "-"
+
+switch(cpStat){
+    case "1" : system = "B타입(5핀)"; break;
+    case "2" : system = "C타입(5핀)"; break;
+    case "3" : system = "BC타입(5핀)"; break;
+    case "4" : system = "BC타입(7핀)"; break;
+    case "5" : system = "DC차데모"; break;
+    case "6" : system = "AC3상"; break;
+    case "7" : system = "DC콤보"; break;
+    case "8" : system = "DC차데모+DC콤보"; break;            
+    default : system = "-";
+}
+
+
+
+var iwContent = '<div style="padding:5px;font-size:10px">'+addr+'<br/>'+csId+'<br/>'+csNm+'<br/>'+cpId+'<br/>'+cpNm+'<br/>타입: '+type+'<br/>상태: '+state+'<br/>방식: '+system+'<br/>'+statUpdateDatetime+'<br/></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    iwPosition = new kakao.maps.LatLng(Number(latitude), Number(hardness)); //인포윈도우 표시 위치입니다
+
+// 인포윈도우를 생성합니다
+var infowindow = new kakao.maps.InfoWindow({
+    position : iwPosition, 
+    content : iwContent 
+});
+  
+// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+infowindow.open(map, marker); 
+</script>
+</body>
+{% endfor %}
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xml:lang='ko' xmlns='http://www.w3.org/1999/xhtml'>
+	<head>
+		<meta http-equiv='Content-Type' content='text/html' charset='utf-8'/>
+		<meta name='viewport' content='user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width'/>
+		<title>전기차 충전소 찾기 결과</title>
+		<script type='text/javascript'>
+			<!--
+			window.addEventListener('load', function(){
+				setTimeout(loaded, 100);
+			}, false);
+			function loaded(){
+				window.scrollTo(0,1);
+			}
+			//-->
+		</script>
+	</head>
+	<body>
+        <table border="1">
+		<tr><td><a href="/">전기차 충전소 찾기</a> > <a href="/requested?api=electric">찾기 페이지</a></td>
+		<tr><td>{{session['sess']}}</td></tr>
+		<tr><td>{{session['api']}}</td></tr>
+		<tr><td>{{session['address']}}</td></tr>
+		{% for item in data %}
+        <tr>
+        	<td>
+        		<a href="/detail_electric?sess={{session['sess']}}&api={{session['api']}}&csid={{item['csId']}}">위치확인</a><br>
+        		충전소ID: {{item['csId']}}<br>
+        		충전소명칭: {{item['csNm']}}<br>
+				충전소주소: {{item['addr']}}<br>
+				충전기타입: {{item['chargeTp']}}<br>
+				충전기상태: {{item['cpStat']}}<br>
+				충전방식: {{item['cpTp']}}<br>
+				갱신상태: {{item['statUpdateDatetime']}}<br>
+			</td>
+        </tr>
+	    {% endfor %}
+	</table>
+	</body>
+</html>

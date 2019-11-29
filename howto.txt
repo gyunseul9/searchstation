@@ -1,0 +1,88 @@
+#information git
+$ git clone https://github.com/gyunseul9/searchstation.git
+
+#install virtualenv
+$ sudo apt install virtualenv
+
+$ virtualenv --python=python3.6 collector
+
+#install supervisord
+$ supervisord --version
+
+$ sudo apt-get remove supervisor
+
+$ sudo apt-get install supervisor
+
+$ supervisord --version
+
+$ sudo service supervisor start
+
+$ sudo supervisorctl start service
+
+$ sudo supervisord -c /etc/supervisor/supervisord.conf
+$ sudo supervisorctl -c /etc/supervisor/supervisord.conf
+
+$ sudo supervisorctl reread
+$ sudo supervisorctl update
+$ sudo supervisorctl start all
+
+$ ps -ef | grep supervisord
+
+$ kill -s SIGTERM 2503 
+
+$ watch -n 1 'ps -ef | grep python | grep -v grep'
+
+#install nginx & uWSGI
+$ sudo apt-get install nginx
+$ sudo apt-get install uwsgi
+$ sudo apt-get install uwsgi-plugin-python3
+
+#configuration nginx -> reference '/home/ubuntu/searchstation/env/'
+$ sudo vi /etc/nginx/sites-available/default
+
+#configuration searchstation -> reference '/home/ubuntu/searchstation/env/'
+$ sudo vi /etc/supervior/conf.d/searchstation.conf
+
+#configuration supervisor -> reference '/home/ubuntu/searchstation/env/'
+$ vi /etc/supervisor/supervisor.conf
+
+#execute web
+$ service nginx stop
+$ service supervisor stop
+$ sudo pkill -f uwsgi -9
+$ cd tmp
+$ rm *.sock
+$ service nginx start
+$ service supervisor start
+$ supervisorctl
+
+#execute virtualenv
+$ cd /home/ubuntu/searchstation
+$source ./bin/activate
+
+# confirm uWSGI
+$ ps -ef | grep uwsgi
+$ sudo pkill -f uwsgi -9
+
+
+#If an error occurs
+#uwsgi: unrecognized option '--py-autoreload'
+#getopt_long() error
+
+$ uwsgi --plugins-list
+$ pip install uwsgi
+$ apt-get install uwsgi-plugin-python
+
+#globa install uWSGI
+sudo apt-get install python3-dev python3-pip python3-setuptools
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install wheel
+sudo -H pip3 install uwsgi
+
+git config --global user.name "gyunseul9"
+git config --global user.email "gyunseul9@gmail.com"
+git init
+git checkout -b refactoring
+git add .
+git commit -am "init"
+git push --set-upstream origin refactoring

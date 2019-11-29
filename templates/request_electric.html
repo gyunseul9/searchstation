@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xml:lang='ko' xmlns='http://www.w3.org/1999/xhtml'>
+	<head>
+		<meta http-equiv='Content-Type' content='text/html' charset='utf-8'/>
+		<meta name='viewport' content='user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width'/>
+		<title>전기차 충전소 찾기</title>
+		<script language="javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+		<script>
+			function checks(){
+				if($("#address").val() == ""){
+					alert("주소를 입력하세요");
+					$("#address").focus(); 
+					return false;
+				}								
+			}
+		</script>
+		<script type='text/javascript'>
+			<!--
+			window.addEventListener('load', function(){
+				setTimeout(loaded, 100);
+			}, false);
+			function loaded(){
+				window.scrollTo(0,1);
+			}
+			//-->
+		</script>
+	</head>
+	<body>
+		<table>
+			<tr><td><a href="/">전기차 충전소 찾기</a></td></tr>
+			<tr><td>&nbsp;</td></tr>
+			<tr><td>예) 주소: 서울,부산,대구,제주,경기... 등</td></tr>
+			<tr>
+				<td>
+					<form action = "/lists_electric" method = "POST" onsubmit="return checks()">
+						주소: <input type = "text" name = "address" id="address" /><br/>
+						<input type = "hidden" name = "sess" value="{{session['sess']}}"/>
+						<input type = "hidden" name = "api" value="{{session['api']}}"/>
+			        	<input type = "submit" value = "submit" />
+					</form>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
